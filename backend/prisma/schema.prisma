@@ -1,13 +1,166 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String
+  phone     String?
+  createdAt DateTime @default(now())
+}
+
+model Warehouse {
+  id        String   @id @default(cuid())
+  name      String
+  city      String
+  address   String
+  createdAt DateTime @default(now())
+
+  stockItems StockItem[]
+}
+
+model Supplier {
+  id           String   @id @default(cuid())
+  name         String
+  contactName  String
+  phone        String
+  email        String?
+  address      String
+  city         String
+  gstNumber    String
+  rating       Float    @default(4.0)
+  createdAt    DateTime @default(now())
+
+  purchaseOrders PurchaseOrder[]
+  products       Product[]
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  products Product[]
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  name          String
+  barcode       String   @unique
+  hsnCode       String
+  category      Category @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  supplier      Supplier @relation(fields: [supplierId], references: [id])
+  supplierId    String
+  purchasePrice Float
+  sellingPrice  Float
+  mrp           Float
+  gstPercent    Float
+  reorderLevel  Int      @default(50)
+  minStock      Int      @default(20)
+  maxStock      Int      @default(500)
+  createdAt     DateTime @default(now())
+
+  stockItems   StockItem[]
+  saleItems    SaleItem[]
+  purchaseItems PurchaseItem[]
+}
+
+model StockItem {
+  id          String    @id @default(cuid())
+  product     Product   @relation(fields: [productId], references: [id])
+  productId   String
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id])
+  warehouseId String
+  quantity    Int       @default(0)
+  batchNumber String?
+  rackNumber  String?
+  expiryDate  DateTime?
+  updatedAt   DateTime  @updatedAt
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  address   String
+  city      String
+  createdAt DateTime @default(now())
+
+  sales Sale[]
+}
+
+model Employee {
+  id         String   @id @default(cuid())
+  name       String
+  role       String
+  phone      String
+  city       String
+  joinedAt   DateTime @default(now())
+}
+
+model PurchaseOrder {
+  id           String   @id @default(cuid())
+  supplier     Supplier @relation(fields: [supplierId], references: [id])
+  supplierId   String
+  status       String   @default("PENDING") // PENDING, APPROVED, DECLINED, DELIVERED
+  totalAmount  Float
+  createdAt    DateTime @default(now())
+  approvedAt   DateTime?
+
+  items PurchaseItem[]
+}
+
+model PurchaseItem {
+  id              String        @id @default(cuid())
+  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+  purchaseOrderId String
+  product         Product       @relation(fields: [productId], references: [id])
+  productId       String
+  quantity        Int
+  unitPrice       Float
+}
+
+model Sale {
+  id           String     @id @default(cuid())
+  customer     Customer?  @relation(fields: [customerId], references: [id])
+  customerId   String?
+  invoiceNo    String     @unique
+  totalAmount  Float
+  gstAmount    Float
+  paymentMode  String     // CASH, UPI, CARD, NET_BANKING, CREDIT
+  createdAt    DateTime   @default(now())
+
+  items SaleItem[]
+}
+
+model SaleItem {
+  id        String  @id @default(cuid())
+  sale      Sale    @relation(fields: [saleId], references: [id])
+  saleId    String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int
+  unitPrice Float
+  gstAmount Float
+}
+
+model AiAlert {
+  id              String   @id @default(cuid())
+  type            String   // LOW_STOCK, EXPIRY, OVERSTOCK, ANOMALY, etc.
+  severity        String   // HIGH, MEDIUM, LOW
+  title           String
+  explanation     String
+  suggestedAction String
+  status          String   @default("PENDING") // PENDING, ACCEPTED, DECLINED
+  createdAt       DateTime @default(now())
 }

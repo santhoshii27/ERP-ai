@@ -13,5 +13,12 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0"
+  }
 }
