@@ -78,11 +78,15 @@ export default function DashboardPage() {
               Role: <span className="font-medium text-blue-600">{user.role}</span>
             </p>
           </div>
-          <div className="flex gap-2">
-            <div className="flex gap-2">
-            <div className="flex gap-2">
-            <div className="flex flex-wrap gap-2">
-            <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
+            {access?.reports && (
+              <button
+                onClick={() => router.push('/reports')}
+                className="rounded-xl bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-700"
+              >
+                Reports
+              </button>
+            )}
             {access?.suppliers && (
               <button
                 onClick={() => router.push('/suppliers')}
@@ -129,10 +133,6 @@ export default function DashboardPage() {
             >
               Log out
             </button>
-          </div>
-          </div>
-          </div>
-          </div>
           </div>
         </div>
 
@@ -212,24 +212,24 @@ export default function DashboardPage() {
 
             {/* AI Alerts */}
             {access?.aiAlerts && (
-            <div className="mt-6">
-              <h2 className="mb-3 font-semibold text-slate-900">AI Alerts — Pending Approval</h2>
-              {summary.aiAlerts.length === 0 ? (
-                <p className="text-sm text-slate-500">No pending alerts right now.</p>
-              ) : (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {summary.aiAlerts.map((alert) => (
-                    <AiAlertCard
-                      key={alert.id}
-                      alert={alert}
-                      onAccept={handleAccept}
-                      onDecline={handleDecline}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-             )}
+              <div className="mt-6">
+                <h2 className="mb-3 font-semibold text-slate-900">AI Alerts — Pending Approval</h2>
+                {summary.aiAlerts.length === 0 ? (
+                  <p className="text-sm text-slate-500">No pending alerts right now.</p>
+                ) : (
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    {summary.aiAlerts.map((alert) => (
+                      <AiAlertCard
+                        key={alert.id}
+                        alert={alert}
+                        onAccept={handleAccept}
+                        onDecline={handleDecline}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </>
         )}
       </div>
