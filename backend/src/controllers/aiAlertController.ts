@@ -26,14 +26,30 @@ export async function acceptAlert(req: AuthRequest, res: Response) {
       return res.status(400).json({ error: 'Alert has already been actioned' });
     }
 
-    // For LOW_STOCK alerts, accepting creates a real purchase order.
-    // This is the "critical action requires approval" flow from the spec:
-    // nothing was created until this explicit accept happens.
-    if (alert.type === 'LOW_STOCK') {
-      // Parse quantity + cost from the suggestedAction text is fragile;
-      // instead we look up the related stock/product via the title match.
-      // For simplicity in this demo, we just log the approval on the alert itself
-      // and mark it accepted. A full implementation would link alert -> productId directly.
+    let createdPO = null;
+
+    // Accepting a LOW_STOCK alert with linkage creates a real purchase order.
+    // This is the core "AI never acts automatically" workflow: nothing existed
+    // until this explicit owner approval happened.
+    if (alert.type === 'LOW_STOCK' && alert.productId && alert.supplierId && alert.recommendedQty) {
+      createdPO = await prisma.purchaseOrder.create({
+        data: {
+          supplierId: alert.supplierId,
+          status: 'APPROVED',
+          totalAmount: alert.estimatedCost ?? 0,
+          approvedAt: new Date(),
+          items: {
+            create: [
+              {
+                productId: alert.productId,
+                quantity: alert.recommendedQty,
+                unitPrice: (alert.estimatedCost ?? 0) / alert.recommendedQty,
+              },
+            ],
+          },
+        },
+        include: { items: true, supplier: true },
+      });
     }
 
     const updated = await prisma.aiAlert.update({
@@ -41,7 +57,13 @@ export async function acceptAlert(req: AuthRequest, res: Response) {
       data: { status: 'ACCEPTED' },
     });
 
-    return res.status(200).json({ alert: updated, message: 'Alert accepted' });
+    return res.status(200).json({
+      alert: updated,
+      purchaseOrder: createdPO,
+      message: createdPO
+        ? `Alert accepted. Purchase order created for ${createdPO.items.length} item(s) from ${createdPO.supplier.name}.`
+        : 'Alert accepted',
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: 'Failed to accept alert' });
