@@ -304,6 +304,10 @@ async function main() {
         explanation: `Stock for ${item.product.name} has fallen to ${item.quantity} units, below the safety level of ${item.product.reorderLevel} at ${item.warehouse.name}.`,
         suggestedAction: `Purchase ${recommendedQty} units. Estimated cost: ₹${estimatedCost}.`,
         status: 'PENDING',
+        productId: item.product.id,
+        supplierId: item.product.supplierId,
+        recommendedQty,
+        estimatedCost,
       },
     });
   }

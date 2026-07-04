@@ -155,12 +155,18 @@ model SaleItem {
 }
 
 model AiAlert {
-  id              String   @id @default(cuid())
-  type            String   // LOW_STOCK, EXPIRY, OVERSTOCK, ANOMALY, etc.
-  severity        String   // HIGH, MEDIUM, LOW
-  title           String
-  explanation     String
-  suggestedAction String
-  status          String   @default("PENDING") // PENDING, ACCEPTED, DECLINED
-  createdAt       DateTime @default(now())
+  id                String   @id @default(cuid())
+  type              String   // LOW_STOCK, EXPIRY, OVERSTOCK, ANOMALY, etc.
+  severity          String   // HIGH, MEDIUM, LOW
+  title             String
+  explanation       String
+  suggestedAction   String
+  status            String   @default("PENDING") // PENDING, ACCEPTED, DECLINED
+  createdAt         DateTime @default(now())
+
+  // Optional linkage so accepting a LOW_STOCK alert can create a real purchase order
+  productId         String?
+  supplierId        String?
+  recommendedQty     Int?
+  estimatedCost      Float?
 }
