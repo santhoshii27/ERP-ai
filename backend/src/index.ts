@@ -6,6 +6,7 @@ import dashboardRoutes from './routes/dashboardRoutes';
 import aiAlertRoutes from './routes/aiAlertRoutes';
 import barcodeRoutes from './routes/barcodeRoutes';
 import billingRoutes from './routes/billingRoutes';
+import inventoryRoutes from './routes/inventoryRoutes';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/ai-alerts', aiAlertRoutes);
 app.use('/api/barcode', barcodeRoutes);
 app.use('/api/billing', billingRoutes);
+app.use('/api/inventory', inventoryRoutes);
 
 const PORT = process.env.PORT || 4000;
 
