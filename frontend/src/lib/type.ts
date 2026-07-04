@@ -53,3 +53,38 @@ export interface ScannedProduct {
   supplier: { name: string };
   stockItems: StockItemWithWarehouse[];
 }
+export interface Customer {
+  id: string;
+  name: string;
+  phone: string;
+  email: string | null;
+  city: string;
+}
+
+export interface CartItem {
+  productId: string;
+  name: string;
+  barcode: string;
+  sellingPrice: number;
+  gstPercent: number;
+  quantity: number;
+}
+
+export interface SaleItemResult {
+  id: string;
+  quantity: number;
+  unitPrice: number;
+  gstAmount: number;
+  product: { name: string; hsnCode: string };
+}
+
+export interface SaleResult {
+  id: string;
+  invoiceNo: string;
+  totalAmount: number;
+  gstAmount: number;
+  paymentMode: string;
+  createdAt: string;
+  items: SaleItemResult[];
+  customer: Customer | null;
+}

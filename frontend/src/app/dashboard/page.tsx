@@ -79,6 +79,13 @@ export default function DashboardPage() {
             </p>
           </div>
           <div className="flex gap-2">
+            <div className="flex gap-2">
+            <button
+              onClick={() => router.push('/billing')}
+              className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
+            >
+              Billing / POS
+            </button>
             <button
               onClick={() => router.push('/scanner')}
               className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
@@ -91,6 +98,7 @@ export default function DashboardPage() {
             >
               Log out
             </button>
+          </div>
           </div>
         </div>
 
