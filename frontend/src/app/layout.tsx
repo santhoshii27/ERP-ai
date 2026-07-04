@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/lib/authContext";
+import { ThemeProvider } from "@/lib/themeContext";
 import AiChatWidget from "@/components/AiChatWidget";
 
 export const metadata: Metadata = {
@@ -15,11 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
-        <AuthProvider>
-          {children}
-          <AiChatWidget />
-        </AuthProvider>
+      <body className="antialiased bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
+        <ThemeProvider>
+          <AuthProvider>
+            {children}
+            <AiChatWidget />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
