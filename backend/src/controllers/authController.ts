@@ -104,7 +104,13 @@ export async function getMe(req: any, res: Response) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    return res.status(200).json({ user });
+    const { FEATURE_ACCESS, hasAccess } = require('../utils/permissions');
+    const access: Record<string, boolean> = {};
+    for (const feature of Object.keys(FEATURE_ACCESS)) {
+      access[feature] = hasAccess(user.role, feature);
+    }
+
+    return res.status(200).json({ user, access });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: 'Failed to fetch user' });

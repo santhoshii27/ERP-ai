@@ -16,7 +16,7 @@ export async function listAlerts(_req: AuthRequest, res: Response) {
 
 export async function acceptAlert(req: AuthRequest, res: Response) {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const alert = await prisma.aiAlert.findUnique({ where: { id } });
     if (!alert) {
@@ -72,7 +72,7 @@ export async function acceptAlert(req: AuthRequest, res: Response) {
 
 export async function declineAlert(req: AuthRequest, res: Response) {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const alert = await prisma.aiAlert.findUnique({ where: { id } });
     if (!alert) {

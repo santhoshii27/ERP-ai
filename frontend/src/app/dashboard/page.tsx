@@ -81,6 +81,19 @@ export default function DashboardPage() {
           <div className="flex gap-2">
             <div className="flex gap-2">
             <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => router.push('/suppliers')}
+              className="rounded-xl bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700"
+            >
+              Suppliers
+            </button>
+            <button
+              onClick={() => router.push('/purchase-orders')}
+              className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+            >
+              Purchase Orders
+            </button>
             <button
               onClick={() => router.push('/inventory')}
               className="rounded-xl bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-900"
@@ -105,6 +118,7 @@ export default function DashboardPage() {
             >
               Log out
             </button>
+          </div>
           </div>
           </div>
           </div>

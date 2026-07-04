@@ -118,3 +118,31 @@ export interface InventoryRow {
   hasExpired: boolean;
   warehouseBreakdown: WarehouseBreakdown[];
 }
+export interface Supplier {
+  id: string;
+  name: string;
+  contactName: string;
+  phone: string;
+  email: string | null;
+  address: string;
+  city: string;
+  gstNumber: string;
+  rating: number;
+}
+
+export interface PurchaseOrderItem {
+  id: string;
+  quantity: number;
+  unitPrice: number;
+  product: { name: string; hsnCode: string };
+}
+
+export interface PurchaseOrder {
+  id: string;
+  status: string;
+  totalAmount: number;
+  createdAt: string;
+  approvedAt: string | null;
+  supplier: Supplier;
+  items: PurchaseOrderItem[];
+}
