@@ -146,3 +146,38 @@ export interface PurchaseOrder {
   supplier: Supplier;
   items: PurchaseOrderItem[];
 }
+export interface TrendPoint {
+  date: string;
+  revenue: number;
+  forecast?: boolean;
+}
+
+export interface WeeklyPoint {
+  week: string;
+  revenue: number;
+}
+
+export interface SalesTrendsResponse {
+  dailyTrend: TrendPoint[];
+  forecast: TrendPoint[];
+  weeklyTrend: WeeklyPoint[];
+}
+
+export interface CategoryRow {
+  category: string;
+  revenue: number;
+  qty: number;
+}
+
+export interface TopCustomer {
+  name: string;
+  totalSpend: number;
+  orderCount: number;
+}
+
+export interface CustomerInsights {
+  topCustomers: TopCustomer[];
+  repeatCustomers: number;
+  oneTimeCustomers: number;
+  totalActiveCustomers: number;
+}

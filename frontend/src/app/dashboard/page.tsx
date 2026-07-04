@@ -79,6 +79,14 @@ export default function DashboardPage() {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
+            {access?.analytics && (
+              <button
+                onClick={() => router.push('/analytics')}
+                className="rounded-xl bg-cyan-600 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-700"
+              >
+                Analytics
+              </button>
+            )}
             {access?.reports && (
               <button
                 onClick={() => router.push('/reports')}
