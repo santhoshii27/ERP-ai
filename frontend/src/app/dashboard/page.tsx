@@ -22,7 +22,7 @@ function formatInr(value: number) {
 }
 
 export default function DashboardPage() {
-  const { user, token, loading, logout } = useAuth();
+  const { user, token, access, loading, logout } = useAuth();
   const router = useRouter();
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [error, setError] = useState('');
@@ -82,42 +82,54 @@ export default function DashboardPage() {
             <div className="flex gap-2">
             <div className="flex gap-2">
             <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => router.push('/suppliers')}
-              className="rounded-xl bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700"
-            >
-              Suppliers
-            </button>
-            <button
-              onClick={() => router.push('/purchase-orders')}
-              className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-            >
-              Purchase Orders
-            </button>
-            <button
-              onClick={() => router.push('/inventory')}
-              className="rounded-xl bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-900"
-            >
-              Inventory
-            </button>
-            <button
-              onClick={() => router.push('/billing')}
-              className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
-            >
-              Billing / POS
-            </button>
-            <button
-              onClick={() => router.push('/scanner')}
-              className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-            >
-              Barcode Scanner
-            </button>
+            <div className="flex flex-wrap gap-2">
+            {access?.suppliers && (
+              <button
+                onClick={() => router.push('/suppliers')}
+                className="rounded-xl bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700"
+              >
+                Suppliers
+              </button>
+            )}
+            {access?.purchaseOrders && (
+              <button
+                onClick={() => router.push('/purchase-orders')}
+                className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+              >
+                Purchase Orders
+              </button>
+            )}
+            {access?.inventory && (
+              <button
+                onClick={() => router.push('/inventory')}
+                className="rounded-xl bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-900"
+              >
+                Inventory
+              </button>
+            )}
+            {access?.billing && (
+              <button
+                onClick={() => router.push('/billing')}
+                className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
+              >
+                Billing / POS
+              </button>
+            )}
+            {access?.scanner && (
+              <button
+                onClick={() => router.push('/scanner')}
+                className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+              >
+                Barcode Scanner
+              </button>
+            )}
             <button
               onClick={logout}
               className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
             >
               Log out
             </button>
+          </div>
           </div>
           </div>
           </div>
@@ -199,6 +211,7 @@ export default function DashboardPage() {
             </div>
 
             {/* AI Alerts */}
+            {access?.aiAlerts && (
             <div className="mt-6">
               <h2 className="mb-3 font-semibold text-slate-900">AI Alerts — Pending Approval</h2>
               {summary.aiAlerts.length === 0 ? (
@@ -216,6 +229,7 @@ export default function DashboardPage() {
                 </div>
               )}
             </div>
+             )}
           </>
         )}
       </div>
