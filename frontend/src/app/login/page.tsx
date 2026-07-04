@@ -1,14 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/authContext';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, token, loading } = useAuth();
+  const router = useRouter();
   const [email, setEmail] = useState('owner@erp.com');
   const [password, setPassword] = useState('password123');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!loading && token) {
+      router.push('/dashboard');
+    }
+  }, [loading, token, router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
