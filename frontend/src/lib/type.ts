@@ -23,3 +23,33 @@ export interface DashboardSummary {
   aiAlerts: AiAlert[];
   revenueTrend: { date: string; revenue: number }[];
 }
+export interface Warehouse {
+  id: string;
+  name: string;
+  city: string;
+  address: string;
+}
+
+export interface StockItemWithWarehouse {
+  id: string;
+  quantity: number;
+  warehouse: Warehouse;
+  batchNumber: string | null;
+  rackNumber: string | null;
+  expiryDate: string | null;
+}
+
+export interface ScannedProduct {
+  id: string;
+  name: string;
+  barcode: string;
+  hsnCode: string;
+  purchasePrice: number;
+  sellingPrice: number;
+  mrp: number;
+  gstPercent: number;
+  reorderLevel: number;
+  category: { name: string };
+  supplier: { name: string };
+  stockItems: StockItemWithWarehouse[];
+}

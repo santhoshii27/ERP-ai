@@ -78,12 +78,20 @@ export default function DashboardPage() {
               Role: <span className="font-medium text-blue-600">{user.role}</span>
             </p>
           </div>
-          <button
-            onClick={logout}
-            className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
-          >
-            Log out
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => router.push('/scanner')}
+              className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            >
+              Barcode Scanner
+            </button>
+            <button
+              onClick={logout}
+              className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+            >
+              Log out
+            </button>
+          </div>
         </div>
 
         {error && (
