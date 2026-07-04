@@ -80,6 +80,13 @@ export default function DashboardPage() {
           </div>
           <div className="flex gap-2">
             <div className="flex gap-2">
+            <div className="flex gap-2">
+            <button
+              onClick={() => router.push('/inventory')}
+              className="rounded-xl bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-900"
+            >
+              Inventory
+            </button>
             <button
               onClick={() => router.push('/billing')}
               className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
@@ -98,6 +105,7 @@ export default function DashboardPage() {
             >
               Log out
             </button>
+          </div>
           </div>
           </div>
         </div>

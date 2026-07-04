@@ -88,3 +88,33 @@ export interface SaleResult {
   items: SaleItemResult[];
   customer: Customer | null;
 }
+export interface WarehouseBreakdown {
+  warehouseId: string;
+  warehouseName: string;
+  quantity: number;
+  batchNumber: string | null;
+  rackNumber: string | null;
+  expiryDate: string | null;
+}
+
+export interface InventoryRow {
+  id: string;
+  name: string;
+  barcode: string;
+  category: string;
+  supplier: string;
+  hsnCode: string;
+  purchasePrice: number;
+  sellingPrice: number;
+  gstPercent: number;
+  reorderLevel: number;
+  minStock: number;
+  maxStock: number;
+  totalQty: number;
+  stockValue: number;
+  isLowStock: boolean;
+  isOverstock: boolean;
+  hasExpiringSoon: boolean;
+  hasExpired: boolean;
+  warehouseBreakdown: WarehouseBreakdown[];
+}
