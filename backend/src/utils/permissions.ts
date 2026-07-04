@@ -26,6 +26,7 @@ export const FEATURE_ACCESS: Record<string, Role[]> = {
   purchaseOrders: ['OWNER', 'MANAGER', 'PROCUREMENT_MANAGER'],
   aiAlerts: ['OWNER', 'MANAGER'],
   reports: ['OWNER', 'MANAGER', 'AUDITOR'],
+  analytics: ['OWNER', 'MANAGER', 'AUDITOR'],
 };
 
 export function hasAccess(role: string, feature: keyof typeof FEATURE_ACCESS): boolean {
