@@ -71,13 +71,12 @@ export default function AnalyticsPage() {
 
   if (loading || !user) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50">
-        <p className="text-slate-500">Loading...</p>
+      <main className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <p className="text-slate-500 dark:text-slate-400">Loading...</p>
       </main>
     );
   }
 
-  // Combine historical + forecast for the chart, marking where forecast begins
   const combinedTrend = trends
     ? [
         ...trends.dailyTrend.slice(-30).map((d) => ({ ...d, actual: d.revenue, predicted: null })),
@@ -86,31 +85,31 @@ export default function AnalyticsPage() {
     : [];
 
   return (
-    <main className="min-h-screen bg-slate-50 p-6 md:p-8">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-6 md:p-8">
       <div className="mx-auto max-w-6xl">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-semibold text-slate-900">Analytics & Forecasting</h1>
-            <p className="mt-1 text-sm text-slate-500">
+            <h1 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">Analytics & Forecasting</h1>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               Sales trends, demand forecast, category performance, and customer insights.
             </p>
           </div>
           <button
             onClick={() => router.push('/dashboard')}
-            className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+            className="rounded-xl border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             Back to Dashboard
           </button>
         </div>
 
         {error && (
-          <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>
+          <p className="mt-4 rounded-lg bg-red-50 dark:bg-red-950/50 px-4 py-3 text-sm text-red-600 dark:text-red-400">{error}</p>
         )}
 
         {/* Sales trend + 7-day forecast */}
-        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 className="font-semibold text-slate-900">Sales Trend (Last 30 Days) + 7-Day Forecast</h2>
-          <p className="mt-1 text-xs text-slate-400">
+        <div className="mt-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
+          <h2 className="font-semibold tracking-tight text-slate-900 dark:text-white">Sales Trend (Last 30 Days) + 7-Day Forecast</h2>
+          <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
             Solid line: actual revenue. Dashed line: statistical forecast for the next 7 days.
           </p>
           <div className="mt-4 h-72">
@@ -147,8 +146,8 @@ export default function AnalyticsPage() {
 
         {/* Category breakdown + weekly seasonality */}
         <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="font-semibold text-slate-900">Revenue by Category</h2>
+          <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
+            <h2 className="font-semibold tracking-tight text-slate-900 dark:text-white">Revenue by Category</h2>
             <div className="mt-4 h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -171,8 +170,8 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="font-semibold text-slate-900">Weekly Revenue (Seasonality)</h2>
+          <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
+            <h2 className="font-semibold tracking-tight text-slate-900 dark:text-white">Weekly Revenue (Seasonality)</h2>
             <div className="mt-4 h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={trends?.weeklyTrend || []}>
@@ -190,11 +189,11 @@ export default function AnalyticsPage() {
         {/* Customer insights */}
         {customerInsights && (
           <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
-            <div className="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 className="font-semibold text-slate-900">Top Customers by Spend</h2>
+            <div className="md:col-span-2 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
+              <h2 className="font-semibold tracking-tight text-slate-900 dark:text-white">Top Customers by Spend</h2>
               <table className="mt-3 w-full text-sm">
                 <thead>
-                  <tr className="text-left text-slate-500">
+                  <tr className="text-left text-slate-500 dark:text-slate-400">
                     <th className="pb-2">Customer</th>
                     <th className="pb-2 text-right">Orders</th>
                     <th className="pb-2 text-right">Total Spend</th>
@@ -202,10 +201,10 @@ export default function AnalyticsPage() {
                 </thead>
                 <tbody>
                   {customerInsights.topCustomers.map((c) => (
-                    <tr key={c.name} className="border-t border-slate-100">
-                      <td className="py-2 text-slate-900">{c.name}</td>
-                      <td className="py-2 text-right text-slate-600">{c.orderCount}</td>
-                      <td className="py-2 text-right font-medium text-slate-900">
+                    <tr key={c.name} className="border-t border-slate-100 dark:border-slate-800">
+                      <td className="py-2 text-slate-900 dark:text-white">{c.name}</td>
+                      <td className="py-2 text-right text-slate-600 dark:text-slate-300">{c.orderCount}</td>
+                      <td className="py-2 text-right font-medium text-slate-900 dark:text-white">
                         {formatInr(c.totalSpend)}
                       </td>
                     </tr>
@@ -215,21 +214,21 @@ export default function AnalyticsPage() {
             </div>
 
             <div className="space-y-4">
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <p className="text-sm text-slate-500">Total Active Customers</p>
-                <p className="mt-1 text-2xl font-semibold text-slate-900">
+              <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
+                <p className="text-sm text-slate-500 dark:text-slate-400">Total Active Customers</p>
+                <p className="mt-1 text-2xl font-semibold text-slate-900 dark:text-white">
                   {customerInsights.totalActiveCustomers}
                 </p>
               </div>
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <p className="text-sm text-slate-500">Repeat Customers</p>
-                <p className="mt-1 text-2xl font-semibold text-emerald-600">
+              <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
+                <p className="text-sm text-slate-500 dark:text-slate-400">Repeat Customers</p>
+                <p className="mt-1 text-2xl font-semibold text-emerald-600 dark:text-emerald-400">
                   {customerInsights.repeatCustomers}
                 </p>
               </div>
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <p className="text-sm text-slate-500">One-Time Customers</p>
-                <p className="mt-1 text-2xl font-semibold text-amber-600">
+              <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
+                <p className="text-sm text-slate-500 dark:text-slate-400">One-Time Customers</p>
+                <p className="mt-1 text-2xl font-semibold text-amber-600 dark:text-amber-400">
                   {customerInsights.oneTimeCustomers}
                 </p>
               </div>

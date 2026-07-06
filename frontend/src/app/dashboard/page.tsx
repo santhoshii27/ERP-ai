@@ -7,6 +7,7 @@ import { apiRequest } from '@/lib/api';
 import { DashboardSummary } from '@/lib/types';
 import KpiCard from '@/components/KpiCard';
 import AiAlertCard from '@/components/AiAlertCard';
+import ThemeToggle from '@/components/ThemeToggle';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -61,24 +62,27 @@ export default function DashboardPage() {
 
   if (loading || !user) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50">
-        <p className="text-slate-500">Loading...</p>
+      <main className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <p className="text-slate-500 dark:text-slate-400">Loading...</p>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 p-6 md:p-8">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-6 md:p-8">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
-        <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
           <div>
-            <h1 className="text-xl font-semibold text-slate-900">Welcome, {user.name}</h1>
-            <p className="text-sm text-slate-500">
-              Role: <span className="font-medium text-blue-600">{user.role}</span>
+            <h1 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">
+              Welcome, {user.name}
+            </h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Role: <span className="font-medium text-blue-600 dark:text-blue-400">{user.role}</span>
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <ThemeToggle />
             {access?.analytics && (
               <button
                 onClick={() => router.push('/analytics')}
@@ -137,7 +141,7 @@ export default function DashboardPage() {
             )}
             <button
               onClick={logout}
-              className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+              className="rounded-xl border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               Log out
             </button>
@@ -145,11 +149,13 @@ export default function DashboardPage() {
         </div>
 
         {error && (
-          <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>
+          <p className="mt-4 rounded-lg bg-red-50 dark:bg-red-950/50 px-4 py-3 text-sm text-red-600 dark:text-red-400">
+            {error}
+          </p>
         )}
 
         {!summary ? (
-          <p className="mt-8 text-slate-500">Loading dashboard data...</p>
+          <p className="mt-8 text-slate-500 dark:text-slate-400">Loading dashboard data...</p>
         ) : (
           <>
             {/* KPI Cards */}
@@ -165,8 +171,10 @@ export default function DashboardPage() {
             </div>
 
             {/* Revenue Trend Chart */}
-            <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 className="font-semibold text-slate-900">Revenue — Last 14 Days</h2>
+            <div className="mt-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
+              <h2 className="font-semibold tracking-tight text-slate-900 dark:text-white">
+                Revenue — Last 14 Days
+              </h2>
               <div className="mt-4 h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={summary.revenueTrend}>
@@ -194,24 +202,24 @@ export default function DashboardPage() {
 
             {/* Top / Least Selling Products */}
             <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <h2 className="font-semibold text-slate-900">Top Selling Products</h2>
+              <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
+                <h2 className="font-semibold tracking-tight text-slate-900 dark:text-white">Top Selling Products</h2>
                 <ul className="mt-3 space-y-2">
                   {summary.topProducts.map((p) => (
                     <li key={p.name} className="flex justify-between text-sm">
-                      <span className="text-slate-700">{p.name}</span>
-                      <span className="font-medium text-slate-900">{p.qty} units</span>
+                      <span className="text-slate-700 dark:text-slate-300">{p.name}</span>
+                      <span className="font-medium text-slate-900 dark:text-white">{p.qty} units</span>
                     </li>
                   ))}
                 </ul>
               </div>
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <h2 className="font-semibold text-slate-900">Least Selling Products</h2>
+              <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
+                <h2 className="font-semibold tracking-tight text-slate-900 dark:text-white">Least Selling Products</h2>
                 <ul className="mt-3 space-y-2">
                   {summary.leastProducts.map((p) => (
                     <li key={p.name} className="flex justify-between text-sm">
-                      <span className="text-slate-700">{p.name}</span>
-                      <span className="font-medium text-slate-900">{p.qty} units</span>
+                      <span className="text-slate-700 dark:text-slate-300">{p.name}</span>
+                      <span className="font-medium text-slate-900 dark:text-white">{p.qty} units</span>
                     </li>
                   ))}
                 </ul>
@@ -221,9 +229,11 @@ export default function DashboardPage() {
             {/* AI Alerts */}
             {access?.aiAlerts && (
               <div className="mt-6">
-                <h2 className="mb-3 font-semibold text-slate-900">AI Alerts — Pending Approval</h2>
+                <h2 className="mb-3 font-semibold tracking-tight text-slate-900 dark:text-white">
+                  AI Alerts — Pending Approval
+                </h2>
                 {summary.aiAlerts.length === 0 ? (
-                  <p className="text-sm text-slate-500">No pending alerts right now.</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">No pending alerts right now.</p>
                 ) : (
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     {summary.aiAlerts.map((alert) => (

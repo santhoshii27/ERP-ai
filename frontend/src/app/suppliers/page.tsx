@@ -48,32 +48,32 @@ export default function SuppliersPage() {
 
   if (loading || !user) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50">
-        <p className="text-slate-500">Loading...</p>
+      <main className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <p className="text-slate-500 dark:text-slate-400">Loading...</p>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 p-6 md:p-8">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-6 md:p-8">
       <div className="mx-auto max-w-6xl">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-semibold text-slate-900">Suppliers</h1>
-            <p className="mt-1 text-sm text-slate-500">
+            <h1 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">Suppliers</h1>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               {suppliers.length} suppliers in your network.
             </p>
           </div>
           <div className="flex gap-2">
             <button
               onClick={() => router.push('/purchase-orders')}
-              className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+              className="rounded-xl border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               Purchase Orders
             </button>
             <button
               onClick={() => router.push('/dashboard')}
-              className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+              className="rounded-xl border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               Back to Dashboard
             </button>
@@ -86,34 +86,34 @@ export default function SuppliersPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search suppliers by name..."
-            className="w-full max-w-sm rounded-xl border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="w-full max-w-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900"
           />
         </div>
 
         {error && (
-          <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>
+          <p className="mt-4 rounded-lg bg-red-50 dark:bg-red-950/50 px-4 py-3 text-sm text-red-600 dark:text-red-400">{error}</p>
         )}
 
         <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {isFetching ? (
-            <p className="text-slate-400">Loading...</p>
+            <p className="text-slate-400 dark:text-slate-500">Loading...</p>
           ) : suppliers.length === 0 ? (
-            <p className="text-slate-400">No suppliers found.</p>
+            <p className="text-slate-400 dark:text-slate-500">No suppliers found.</p>
           ) : (
             suppliers.map((s) => (
-              <div key={s.id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div key={s.id} className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
                 <div className="flex items-start justify-between">
-                  <h3 className="font-semibold text-slate-900">{s.name}</h3>
-                  <span className="rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700">
+                  <h3 className="font-semibold tracking-tight text-slate-900 dark:text-white">{s.name}</h3>
+                  <span className="rounded-full bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-400">
                     ★ {s.rating.toFixed(1)}
                   </span>
                 </div>
-                <p className="mt-1 text-sm text-slate-500">{s.contactName}</p>
-                <div className="mt-3 space-y-1 text-xs text-slate-600">
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{s.contactName}</p>
+                <div className="mt-3 space-y-1 text-xs text-slate-600 dark:text-slate-300">
                   <p>📞 {s.phone}</p>
                   {s.email && <p>✉️ {s.email}</p>}
                   <p>📍 {s.city}</p>
-                  <p className="text-slate-400">GST: {s.gstNumber}</p>
+                  <p className="text-slate-400 dark:text-slate-500">GST: {s.gstNumber}</p>
                 </div>
               </div>
             ))

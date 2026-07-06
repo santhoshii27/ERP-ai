@@ -154,3 +154,33 @@ export async function getInvoice(req: AuthRequest, res: Response) {
     return res.status(500).json({ error: 'Failed to fetch invoice' });
   }
 }
+export async function createCustomer(req: AuthRequest, res: Response) {
+  try {
+    const { name, phone, email, city, address } = req.body as {
+      name: string;
+      phone: string;
+      email?: string;
+      city: string;
+      address?: string;
+    };
+
+    if (!name || !phone || !city) {
+      return res.status(400).json({ error: 'name, phone, and city are required' });
+    }
+
+    const customer = await prisma.customer.create({
+      data: {
+        name,
+        phone,
+        email: email || null,
+        city,
+        address: address || 'Not provided',
+      },
+    });
+
+    return res.status(201).json({ customer });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Failed to create customer' });
+  }
+}

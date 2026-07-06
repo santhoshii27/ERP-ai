@@ -25,10 +25,6 @@ export default function ScannerPage() {
   const [error, setError] = useState('');
   const [notFoundBarcode, setNotFoundBarcode] = useState('');
 
-  // USB/Bluetooth scanner support: these scanners act as keyboards typing
-  // fast, ending with Enter. We buffer keystrokes and treat a fast burst
-  // ending in Enter as a scan, without interfering with normal typing in
-  // the manual input box.
   const bufferRef = useRef('');
   const lastKeyTimeRef = useRef(0);
 
@@ -69,11 +65,9 @@ export default function ScannerPage() {
     [token]
   );
 
-  // Global keydown listener for USB/Bluetooth barcode scanners
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       const now = Date.now();
-      // Reset buffer if there's a pause (real typing is much slower than scanner input)
       if (now - lastKeyTimeRef.current > 100) {
         bufferRef.current = '';
       }
@@ -119,25 +113,25 @@ export default function ScannerPage() {
 
   if (loading || !user) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50">
-        <p className="text-slate-500">Loading...</p>
+      <main className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <p className="text-slate-500 dark:text-slate-400">Loading...</p>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 p-6 md:p-8">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-6 md:p-8">
       <div className="mx-auto max-w-3xl">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-semibold text-slate-900">Barcode Scanner — Receiving</h1>
-            <p className="mt-1 text-sm text-slate-500">
+            <h1 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-white">Barcode Scanner — Receiving</h1>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               Scan with camera, USB scanner, or enter manually.
             </p>
           </div>
           <button
             onClick={() => router.push('/dashboard')}
-            className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+            className="rounded-xl border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             Back to Dashboard
           </button>
@@ -150,7 +144,7 @@ export default function ScannerPage() {
             className={`rounded-xl px-4 py-2 text-sm font-medium ${
               cameraActive
                 ? 'bg-blue-600 text-white'
-                : 'border border-slate-300 text-slate-700 hover:bg-slate-100'
+                : 'border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
             {cameraActive ? 'Stop Camera' : 'Start Camera Scan'}
@@ -163,8 +157,8 @@ export default function ScannerPage() {
         </div>
 
         {/* Manual entry + USB scanner note */}
-        <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <label className="mb-1 block text-sm font-medium text-slate-700">
+        <div className="mt-4 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
+          <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Manual Entry / USB Scanner Input
           </label>
           <div className="flex gap-2">
@@ -176,7 +170,7 @@ export default function ScannerPage() {
                 if (e.key === 'Enter') handleManualLookup();
               }}
               placeholder="Type or scan barcode, then press Enter"
-              className="flex-1 rounded-xl border border-slate-300 px-4 py-2.5 text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="flex-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-4 py-2.5 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900"
             />
             <button
               onClick={handleManualLookup}
@@ -185,19 +179,19 @@ export default function ScannerPage() {
               Lookup
             </button>
           </div>
-          <p className="mt-2 text-xs text-slate-400">
+          <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
             USB/Bluetooth barcode scanners work automatically anywhere on this page — just scan.
           </p>
         </div>
 
         {message && (
-          <p className="mt-4 rounded-lg bg-green-50 px-4 py-3 text-sm text-green-700">{message}</p>
+          <p className="mt-4 rounded-lg bg-green-50 dark:bg-green-950/50 px-4 py-3 text-sm text-green-700 dark:text-green-400">{message}</p>
         )}
         {error && (
-          <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>
+          <p className="mt-4 rounded-lg bg-red-50 dark:bg-red-950/50 px-4 py-3 text-sm text-red-600 dark:text-red-400">{error}</p>
         )}
         {notFoundBarcode && (
-          <p className="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
+          <p className="mt-4 rounded-lg bg-amber-50 dark:bg-amber-950/50 px-4 py-3 text-sm text-amber-700 dark:text-amber-400">
             No product found for barcode <strong>{notFoundBarcode}</strong>. Create New Product?
             (Coming soon — product creation from unknown barcodes)
           </p>
@@ -205,68 +199,68 @@ export default function ScannerPage() {
 
         {/* Product found -> receiving form */}
         {product && (
-          <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="font-semibold text-slate-900">{product.name}</h2>
-            <p className="text-sm text-slate-500">
+          <div className="mt-4 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl p-5 shadow-sm">
+            <h2 className="font-semibold tracking-tight text-slate-900 dark:text-white">{product.name}</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               {product.category.name} • Supplier: {product.supplier.name}
             </p>
 
             <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
               <div>
-                <span className="text-slate-500">Barcode:</span>{' '}
-                <span className="font-medium text-slate-900">{product.barcode}</span>
+                <span className="text-slate-500 dark:text-slate-400">Barcode:</span>{' '}
+                <span className="font-medium text-slate-900 dark:text-white">{product.barcode}</span>
               </div>
               <div>
-                <span className="text-slate-500">HSN Code:</span>{' '}
-                <span className="font-medium text-slate-900">{product.hsnCode}</span>
+                <span className="text-slate-500 dark:text-slate-400">HSN Code:</span>{' '}
+                <span className="font-medium text-slate-900 dark:text-white">{product.hsnCode}</span>
               </div>
               <div>
-                <span className="text-slate-500">Purchase Price:</span>{' '}
-                <span className="font-medium text-slate-900">{formatInr(product.purchasePrice)}</span>
+                <span className="text-slate-500 dark:text-slate-400">Purchase Price:</span>{' '}
+                <span className="font-medium text-slate-900 dark:text-white">{formatInr(product.purchasePrice)}</span>
               </div>
               <div>
-                <span className="text-slate-500">Selling Price:</span>{' '}
-                <span className="font-medium text-slate-900">{formatInr(product.sellingPrice)}</span>
+                <span className="text-slate-500 dark:text-slate-400">Selling Price:</span>{' '}
+                <span className="font-medium text-slate-900 dark:text-white">{formatInr(product.sellingPrice)}</span>
               </div>
               <div>
-                <span className="text-slate-500">GST:</span>{' '}
-                <span className="font-medium text-slate-900">{product.gstPercent}%</span>
+                <span className="text-slate-500 dark:text-slate-400">GST:</span>{' '}
+                <span className="font-medium text-slate-900 dark:text-white">{product.gstPercent}%</span>
               </div>
               <div>
-                <span className="text-slate-500">Reorder Level:</span>{' '}
-                <span className="font-medium text-slate-900">{product.reorderLevel}</span>
+                <span className="text-slate-500 dark:text-slate-400">Reorder Level:</span>{' '}
+                <span className="font-medium text-slate-900 dark:text-white">{product.reorderLevel}</span>
               </div>
             </div>
 
-            <div className="mt-4 border-t border-slate-100 pt-4">
-              <h3 className="text-sm font-semibold text-slate-700">Current Stock by Warehouse</h3>
+            <div className="mt-4 border-t border-slate-100 dark:border-slate-800 pt-4">
+              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Current Stock by Warehouse</h3>
               <ul className="mt-2 space-y-1">
                 {product.stockItems.map((s) => (
                   <li key={s.id} className="flex justify-between text-sm">
-                    <span className="text-slate-600">{s.warehouse.name}</span>
-                    <span className="font-medium text-slate-900">{s.quantity} units</span>
+                    <span className="text-slate-600 dark:text-slate-400">{s.warehouse.name}</span>
+                    <span className="font-medium text-slate-900 dark:text-white">{s.quantity} units</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-3 border-t border-slate-100 pt-4">
+            <div className="mt-4 grid grid-cols-2 gap-3 border-t border-slate-100 dark:border-slate-800 pt-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700">Quantity to Add</label>
+                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Quantity to Add</label>
                 <input
                   type="number"
                   min={1}
                   value={quantity}
                   onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="w-full rounded-xl border border-slate-300 px-4 py-2 text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-4 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900"
                 />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700">Warehouse</label>
+                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Warehouse</label>
                 <select
                   value={selectedWarehouse}
                   onChange={(e) => setSelectedWarehouse(e.target.value)}
-                  className="w-full rounded-xl border border-slate-300 px-4 py-2 text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-4 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900"
                 >
                   {warehouses.map((w) => (
                     <option key={w.id} value={w.id}>
